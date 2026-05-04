@@ -5,216 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>VP Role – Панель игрока</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: #fff;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #fff; min-height: 100vh; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; }
     .card {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: transform 0.2s;
+      background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+      border-radius: 24px; padding: 20px; margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.12); transition: transform 0.2s;
     }
-
-    .card:hover {
-      transform: translateY(-2px);
-    }
-
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 12px;
-    }
-
+    .card:hover { transform: translateY(-2px); }
+    .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
     .avatar {
-      width: 64px;
-      height: 64px;
+      width: 64px; height: 64px;
       background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: bold;
-      flex-shrink: 0;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; flex-shrink: 0;
     }
-
-    .info h2 {
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .info .username {
-      color: rgba(255,255,255,0.7);
-      font-size: 14px;
-    }
-
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .stat-row:last-child {
-      border-bottom: none;
-    }
-
-    .stat-label {
-      color: rgba(255,255,255,0.65);
-      font-size: 14px;
-    }
-
-    .stat-value {
-      font-weight: 600;
-    }
-
-    .flag {
-      font-size: 24px;
-      margin-right: 8px;
-    }
-
-    .top-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    .top-table th {
-      text-align: left;
-      color: rgba(255,255,255,0.6);
-      font-weight: 500;
-      font-size: 12px;
-      padding-bottom: 8px;
-    }
-
-    .top-table td {
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 14px;
-    }
-
-    .filter-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
+    .info h2 { font-size: 20px; font-weight: 600; }
+    .info .username { color: rgba(255,255,255,0.7); font-size: 14px; }
+    .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { color: rgba(255,255,255,0.65); font-size: 14px; }
+    .stat-value { font-weight: 600; }
+    .top-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .top-table th { text-align: left; color: rgba(255,255,255,0.6); font-weight: 500; font-size: 12px; padding-bottom: 8px; }
+    .top-table td { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14px; }
+    .filter-bar { display: flex; gap: 10px; margin-bottom: 12px; }
     .filter-btn {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: rgba(255,255,255,0.1); border: none; color: white;
+      padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: background 0.2s;
     }
-
-    .filter-btn.active {
-      background: #6c63ff;
-      box-shadow: 0 4px 12px rgba(108,99,255,0.4);
-    }
-
-    .joke-box {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 20px;
-      padding: 16px;
-      margin-top: 8px;
-    }
-
-    .joke-box p {
-      font-style: italic;
-      font-size: 15px;
-      line-height: 1.4;
-    }
-
-    .joke-box .author {
-      font-size: 12px;
-      opacity: 0.7;
-      margin-top: 6px;
-    }
-
+    .filter-btn.active { background: #6c63ff; box-shadow: 0 4px 12px rgba(108,99,255,0.4); }
+    .joke-box { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 20px; padding: 16px; margin-top: 8px; }
+    .joke-box p { font-style: italic; font-size: 15px; line-height: 1.4; }
+    .joke-box .author { font-size: 12px; opacity: 0.7; margin-top: 6px; }
     button {
-      background: none;
-      border: 1px solid rgba(255,255,255,0.25);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 14px;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: all 0.2s;
+      background: none; border: 1px solid rgba(255,255,255,0.25); color: white;
+      padding: 10px 18px; border-radius: 14px; font-size: 14px; cursor: pointer; margin-top: 12px; transition: all 0.2s;
     }
-
-    button:hover {
-      background: rgba(255,255,255,0.15);
-    }
-
-    .loading {
-      opacity: 0.5;
-      text-align: center;
-      padding: 20px;
-    }
-    @media (max-width: 400px) {
-      .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
+    button:hover { background: rgba(255,255,255,0.15); }
+    .loading { opacity: 0.5; text-align: center; padding: 20px; }
+    @media (max-width: 400px) { .profile-header { flex-direction: column; align-items: flex-start; } }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Профиль игрока -->
-    <div class="card" id="playerProfile">
-      <div class="loading">Загрузка профиля...</div>
-    </div>
-
-    <!-- Профиль страны -->
-    <div class="card" id="countryProfile">
-      <div class="loading">Загрузка данных страны...</div>
-    </div>
-
-    <!-- Топ стран -->
+    <div class="card" id="playerProfile"><div class="loading">Загрузка профиля...</div></div>
+    <div class="card" id="countryProfile"><div class="loading">Загрузка страны...</div></div>
     <div class="card">
       <h3 style="margin-bottom: 8px;">🏆 Топ стран</h3>
       <div class="filter-bar">
         <button class="filter-btn active" id="filterPop">По населению</button>
         <button class="filter-btn" id="filterHod">По ходам</button>
       </div>
-      <table class="top-table" id="topTable">
-        <thead><tr><th>#</th><th>Страна</th><th>Население</th><th>Ходов</th></tr></thead>
-        <tbody></tbody>
-      </table>
+      <table class="top-table"><thead><tr><th>#</th><th>Страна</th><th>Население</th><th>Ходов</th></tr></thead><tbody></tbody></table>
     </div>
-
-    <!-- Тонкая шутка -->
-    <div class="card joke-box" id="jokeCard">
-      <p id="jokeText">Загрузка мудрости...</p>
-      <div class="author" id="jokeExplain"></div>
-    </div>
-
-    <button onclick="Telegram.WebApp.close()" style="width: 100%; margin-top: 8px;">Закрыть</button>
+    <div class="card joke-box"><p id="jokeText"></p><div class="author" id="jokeExplain"></div></div>
+    <button onclick="Telegram.WebApp.close()" style="width:100%;margin-top:8px;">Закрыть</button>
   </div>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -223,123 +70,97 @@
     app.ready();
     app.expand();
 
-    // Демо-данные (в реальном проекте тянутся с сервера через fetch + initData)
-    const currentUserId = app.initDataUnsafe?.user?.id || 123456;
-    const currentUser = app.initDataUnsafe?.user || { first_name: 'Игрок', username: 'player' };
+    // Расширенный блок шуток
+    const jokes = [
+      { text: "Ваш министр обороны предлагает стратегию «Ни шагу назад», но только до обеда.", explain: "Суровые приказы разбиваются о бытовуху — военачальники тоже хотят есть." },
+      { text: "Генеральный штаб разработал план «Блицкриг на диване» — вторжение откладывается до выхода нового сезона любимого сериала.", explain: "Даже в серьёзной ролевой игре человеческие слабости берут верх." },
+      { text: "Ваша страна объявила дефолт, но зато какой красивый флаг!", explain: "Приоритеты: экономика рушится, но национальная гордость на высоте." },
+      { text: "Парламент принял закон о повышении зарплат депутатам. Население восстало… но депутаты успели улететь в отпуск.", explain: "Классика: пока народ бастует, власть на курортах." },
+      { text: "Ваш дипломат случайно отправил в ООН мем вместо официальной ноты. Реакция мира: «Лучшее выступление за год».", explain: "Иногда неформальность побеждает скучную дипломатию." },
+      { text: "Спецслужбы разработали секретный план «Тихий час». Теперь все разведчики спят с 13 до 15.", explain: "Даже шпионам нужен отдых. Эффективность под вопросом." },
+      { text: "Казначей предложил печатать деньги с вашим портретом. Инфляция выросла, но зато какая известность!", explain: "Самолюбование vs экономика." },
+      { text: "Великая армия проиграла битву, потому что картограф перепутал север и юг. Зато солдаты отлично попутешествовали.", explain: "Ошибки логистики иногда превращаются в туристический трип." },
+      { text: "Ваш народ настолько суров, что выращивает картошку прямо на крыше парламента.", explain: "Аграрный гений в отдельно взятой стране." },
+      { text: "Министр культуры перепутал оперу с опереттой. Теперь вся страна хихикает на государственном концерте.", explain: "Высокое искусство иногда оказывается неожиданно смешным." },
+      { text: "Ваша армия перешла на электросамокаты. Теперь никто не знает, война это или доставка еды.", explain: "Модернизация порой вносит путаницу." }
+    ];
 
-    // Имитация базы данных
-    const usersDB = {
-      [currentUserId]: {
-        country: 'Россия',
-        position: 'Министр обороны',
-        hod_left: 4,
-      }
-    };
+    // Достаём данные из URL
+    function getPayload() {
+      const params = new URLSearchParams(window.location.search);
+      const payloadParam = params.get('payload');
+      if (!payloadParam) return null;
+      try {
+        const json = atob(payloadParam.replace(/-/g, '+').replace(/_/g, '/'));
+        return JSON.parse(decodeURIComponent(escape(json)));
+      } catch (e) { return null; }
+    }
 
-    const countriesDB = {
-      'Россия': { population: 143_000_000, max_hod: 23, flag: '🇷🇺' },
-      'США': { population: 331_000_000, max_hod: 55, flag: '🇺🇸' },
-      'Китай': { population: 1_410_000_000, max_hod: 235, flag: '🇨🇳' },
-      'Германия': { population: 83_000_000, max_hod: 13, flag: '🇩🇪' },
-      'Бразилия': { population: 213_000_000, max_hod: 35, flag: '🇧🇷' },
-    };
-
+    const data = getPayload();
+    
     function renderPlayerProfile() {
-      const userData = usersDB[currentUserId] || { country: null, position: 'Нет', hod_left: 0 };
       const card = document.getElementById('playerProfile');
+      if (!data || !data.user) {
+        card.innerHTML = '<p>Ошибка загрузки данных</p>'; return;
+      }
+      const u = data.user;
       card.innerHTML = `
         <div class="profile-header">
-          <div class="avatar">${currentUser.first_name.charAt(0)}</div>
+          <div class="avatar">${u.first_name.charAt(0)}</div>
           <div class="info">
-            <h2>${escapeHtml(currentUser.first_name)}</h2>
-            <div class="username">${currentUser.username ? '@' + escapeHtml(currentUser.username) : ''}</div>
+            <h2>${escapeHtml(u.first_name)}</h2>
+            <div class="username">${u.username ? '@'+escapeHtml(u.username) : ''}</div>
           </div>
         </div>
-        <div class="stat-row">
-          <span class="stat-label">ID</span>
-          <span class="stat-value">${currentUserId}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Страна</span>
-          <span class="stat-value">${userData.country ? countriesDB[userData.country]?.flag + ' ' + userData.country : 'Не назначена'}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Должность</span>
-          <span class="stat-value">${escapeHtml(userData.position)}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Ходов осталось</span>
-          <span class="stat-value">${userData.hod_left}</span>
-        </div>
+        <div class="stat-row"><span class="stat-label">ID</span><span class="stat-value">${u.id}</span></div>
+        <div class="stat-row"><span class="stat-label">Страна</span><span class="stat-value">${u.country || 'Не назначена'}</span></div>
+        <div class="stat-row"><span class="stat-label">Должность</span><span class="stat-value">${escapeHtml(u.position) || 'Нет'}</span></div>
+        <div class="stat-row"><span class="stat-label">Ходы</span><span class="stat-value">${u.hod_left} / ${u.country_max_hod || '?'}</span></div>
       `;
     }
 
     function renderCountryProfile() {
-      const userCountry = usersDB[currentUserId]?.country;
       const card = document.getElementById('countryProfile');
-      if (!userCountry || !countriesDB[userCountry]) {
-        card.innerHTML = `<p style="opacity:0.7">Вы не управляете страной.</p>`;
-        return;
+      if (!data || !data.user || !data.user.country) {
+        card.innerHTML = '<p>Вы не управляете страной.</p>'; return;
       }
-      const c = countriesDB[userCountry];
+      const u = data.user;
       card.innerHTML = `
-        <h3 style="display:flex;align-items:center;">${c.flag} ${escapeHtml(userCountry)}</h3>
-        <div class="stat-row">
-          <span class="stat-label">Население</span>
-          <span class="stat-value">${c.population.toLocaleString()}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Макс. ходов</span>
-          <span class="stat-value">${c.max_hod}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Ходов на руках</span>
-          <span class="stat-value">${usersDB[currentUserId]?.hod_left ?? 0}</span>
-        </div>
+        <h3>🌍 ${escapeHtml(u.country)}</h3>
+        <div class="stat-row"><span class="stat-label">Население</span><span class="stat-value">${(u.country_population || 0).toLocaleString()}</span></div>
+        <div class="stat-row"><span class="stat-label">Макс. ходов</span><span class="stat-value">${u.country_max_hod}</span></div>
+        <div class="stat-row"><span class="stat-label">Ходов на руках</span><span class="stat-value">${u.hod_left}</span></div>
       `;
     }
 
     function renderTopTable(sortBy = 'population') {
-      const tbody = document.getElementById('topTable').querySelector('tbody');
-      const entries = Object.entries(countriesDB);
-      entries.sort((a, b) => (sortBy === 'population') ? b[1].population - a[1].population : b[1].max_hod - a[1].max_hod);
-      tbody.innerHTML = entries.map(([name, info], index) => `
+      const tbody = document.querySelector('#topTable tbody');
+      if (!data || !data.top) {
+        tbody.innerHTML = '<tr><td colspan="4">Нет данных</td></tr>'; return;
+      }
+      const list = [...data.top];
+      if (sortBy === 'population') list.sort((a,b) => b.population - a.population);
+      else list.sort((a,b) => b.max_hod - a.max_hod);
+      tbody.innerHTML = list.map((c, i) => `
         <tr>
-          <td>${index + 1}</td>
-          <td>${info.flag} ${escapeHtml(name)}</td>
-          <td>${info.population.toLocaleString()}</td>
-          <td>${info.max_hod}</td>
+          <td>${i+1}</td><td>${escapeHtml(c.name)}</td>
+          <td>${c.population.toLocaleString()}</td><td>${c.max_hod}</td>
         </tr>
       `).join('');
     }
 
-    const jokes = [
-      {
-        text: "Ваш министр обороны предлагает стратегию «Ни шагу назад», но только до обеда.",
-        explain: "Намёк: суровые приказы разбиваются о бытовуху — военачальники тоже хотят есть. Война войной, а обед по расписанию."
-      },
-      {
-        text: "Генеральный штаб разработал план «Блицкриг на диване» — вторжение откладывается до выхода нового сезона любимого сериала.",
-        explain: "Ирония над тем, что даже в серьёзной ролевой игре человеческие слабости берут верх."
-      },
-      {
-        text: "Ваша страна объявила дефолт, но зато какой красивый флаг!",
-        explain: "Приоритеты: экономика рушится, но национальная гордость на высоте."
-      }
-    ];
-
-    function renderJoke() {
-      const joke = jokes[Math.floor(Math.random() * jokes.length)];
-      document.getElementById('jokeText').innerText = `«${joke.text}»`;
-      document.getElementById('jokeExplain').innerText = `💡 ${joke.explain}`;
+    function randomJoke() {
+      const j = jokes[Math.floor(Math.random() * jokes.length)];
+      document.getElementById('jokeText').innerText = `«${j.text}»`;
+      document.getElementById('jokeExplain').innerText = `💡 ${j.explain}`;
     }
 
     function escapeHtml(text) {
-      const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'};
+      const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
       return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
-    // Фильтры топа
+    // Фильтры
     document.getElementById('filterPop').addEventListener('click', function() {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
@@ -351,14 +172,11 @@
       renderTopTable('hod');
     });
 
-    // Первичная отрисовка
+    // Рендерим
     renderPlayerProfile();
     renderCountryProfile();
     renderTopTable('population');
-    renderJoke();
-
-    // Можно обновлять данные по кнопке (если появится API)
-    // setInterval(() => { fetchDataFromBot(); }, 60000);
+    randomJoke();
   </script>
 </body>
 </html>
