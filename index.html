@@ -70,7 +70,7 @@
     app.ready();
     app.expand();
 
-    // Расширенный блок шуток
+    // Шутки
     const jokes = [
       { text: "Ваш министр обороны предлагает стратегию «Ни шагу назад», но только до обеда.", explain: "Суровые приказы разбиваются о бытовуху — военачальники тоже хотят есть." },
       { text: "Генеральный штаб разработал план «Блицкриг на диване» — вторжение откладывается до выхода нового сезона любимого сериала.", explain: "Даже в серьёзной ролевой игре человеческие слабости берут верх." },
@@ -85,19 +85,31 @@
       { text: "Ваша армия перешла на электросамокаты. Теперь никто не знает, война это или доставка еды.", explain: "Модернизация порой вносит путаницу." }
     ];
 
-    // Достаём данные из URL
+    // Правильный декодер Base64 → строка (с поддержкой кириллицы)
+    function fromBase64(str) {
+      const binary = atob(str.replace(/-/g, '+').replace(/_/g, '/'));
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return new TextDecoder().decode(bytes);
+    }
+
     function getPayload() {
       const params = new URLSearchParams(window.location.search);
       const payloadParam = params.get('payload');
       if (!payloadParam) return null;
       try {
-        const json = atob(payloadParam.replace(/-/g, '+').replace(/_/g, '/'));
-        return JSON.parse(decodeURIComponent(escape(json)));
-      } catch (e) { return null; }
+        const jsonStr = fromBase64(payloadParam);
+        return JSON.parse(jsonStr);
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
     }
 
     const data = getPayload();
-    
+
     function renderPlayerProfile() {
       const card = document.getElementById('playerProfile');
       if (!data || !data.user) {
@@ -135,7 +147,7 @@
 
     function renderTopTable(sortBy = 'population') {
       const tbody = document.querySelector('#topTable tbody');
-      if (!data || !data.top) {
+      if (!data || !data.top || data.top.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4">Нет данных</td></tr>'; return;
       }
       const list = [...data.top];
@@ -172,7 +184,7 @@
       renderTopTable('hod');
     });
 
-    // Рендерим
+    // Рендер
     renderPlayerProfile();
     renderCountryProfile();
     renderTopTable('population');
